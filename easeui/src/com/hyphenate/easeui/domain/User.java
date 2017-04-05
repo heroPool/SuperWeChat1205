@@ -11,6 +11,7 @@ public class User implements Serializable {
     private Integer mavatarType;
     private String mavatarLastUpdateTime;
 
+    private String avatar;
     /**
      * initial letter for nickname
      */
@@ -104,7 +105,6 @@ public class User implements Serializable {
 //		this.initialLetter = initialLetter;
 //	}
 
-
     @Override
     public String toString() {
         return "User{" +
@@ -115,9 +115,11 @@ public class User implements Serializable {
                 ", mavatarSuffix='" + mavatarSuffix + '\'' +
                 ", mavatarType=" + mavatarType +
                 ", mavatarLastUpdateTime='" + mavatarLastUpdateTime + '\'' +
+                ", avatar='" + avatar + '\'' +
                 ", initialLetter='" + initialLetter + '\'' +
                 '}';
     }
+
 
 //	public String getInitialLetter() {
 //		if(initialLetter == null){
@@ -130,13 +132,13 @@ public class User implements Serializable {
         this.initialLetter = initialLetter;
     }
 
-//    public String getAvatar() {
-//        if (avatar != null) {
-//            return avatar;
-//        } else {
-//
-//            String path = "http://101.251.196.90:8080/SuperWeChatServerV2.0/downloadAvatar?name_or_hxid=" + getMUserName() + "&avatarType=user_avatar&m_avatar_suffix=" + getMAvatarSuffix() + "&updatetime=" + getMAvatarLastUpdateTime();
-//            return path;
-//        }
-//    }
+    public String getAvatar() {
+        if (avatar != null) {
+            return avatar;
+        } else {
+
+            String path = "http://101.251.196.90:8080/SuperWeChatServerV2.0/downloadAvatar?name_or_hxid=" + getMUserName() + "&avatarType=user_avatar&m_avatar_suffix=" + getMAvatarSuffix() + "&updatetime=" + getMAvatarLastUpdateTime();
+            return path;
+        }
+    }
 }

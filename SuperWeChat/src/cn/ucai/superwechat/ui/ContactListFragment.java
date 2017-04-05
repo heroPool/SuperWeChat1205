@@ -13,21 +13,6 @@
  */
 package cn.ucai.superwechat.ui;
 
-import java.util.Hashtable;
-import java.util.Map;
-
-import com.hyphenate.chat.EMClient;
-import cn.ucai.superwechat.SuperWeChatHelper;
-import cn.ucai.superwechat.SuperWeChatHelper.DataSyncListener;
-import cn.ucai.superwechat.R;
-import cn.ucai.superwechat.db.InviteMessgeDao;
-import cn.ucai.superwechat.db.UserDao;
-import cn.ucai.superwechat.widget.ContactItemView;
-import com.hyphenate.easeui.domain.EaseUser;
-import com.hyphenate.easeui.ui.EaseContactListFragment;
-import com.hyphenate.util.EMLog;
-import com.hyphenate.util.NetUtils;
-
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -41,6 +26,22 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Toast;
+
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.easeui.domain.EaseUser;
+import com.hyphenate.easeui.ui.EaseContactListFragment;
+import com.hyphenate.util.EMLog;
+import com.hyphenate.util.NetUtils;
+
+import java.util.Hashtable;
+import java.util.Map;
+
+import cn.ucai.superwechat.R;
+import cn.ucai.superwechat.SuperWeChatHelper;
+import cn.ucai.superwechat.SuperWeChatHelper.DataSyncListener;
+import cn.ucai.superwechat.db.InviteMessgeDao;
+import cn.ucai.superwechat.db.UserDao;
+import cn.ucai.superwechat.widget.ContactItemView;
 
 /**
  * contact list
@@ -65,8 +66,8 @@ public class ContactListFragment extends EaseContactListFragment {
         applicationItem = (ContactItemView) headerView.findViewById(R.id.application_item);
         applicationItem.setOnClickListener(clickListener);
         headerView.findViewById(R.id.group_item).setOnClickListener(clickListener);
-        headerView.findViewById(R.id.chat_room_item).setOnClickListener(clickListener);
-        headerView.findViewById(R.id.robot_item).setOnClickListener(clickListener);
+//        headerView.findViewById(R.id.chat_room_item).setOnClickListener(clickListener);
+//        headerView.findViewById(R.id.robot_item).setOnClickListener(clickListener);
         listView.addHeaderView(headerView);
         //add loading view
         loadingView = LayoutInflater.from(getActivity()).inflate(R.layout.em_layout_loading_data, null);
@@ -182,17 +183,18 @@ public class ContactListFragment extends EaseContactListFragment {
                 startActivity(new Intent(getActivity(), NewFriendsMsgActivity.class));
                 break;
             case R.id.group_item:
+
                 // 进入群聊列表页面
                 startActivity(new Intent(getActivity(), GroupsActivity.class));
                 break;
-            case R.id.chat_room_item:
-                //进入聊天室列表页面
-                startActivity(new Intent(getActivity(), PublicChatRoomsActivity.class));
-                break;
-            case R.id.robot_item:
-                //进入Robot列表页面
-                startActivity(new Intent(getActivity(), RobotsActivity.class));
-                break;
+//            case R.id.chat_room_item:
+//                //进入聊天室列表页面
+//                startActivity(new Intent(getActivity(), PublicChatRoomsActivity.class));
+//                break;
+//            case R.id.robot_item:
+//                //进入Robot列表页面
+//                startActivity(new Intent(getActivity(), RobotsActivity.class));
+//                break;
 
             default:
                 break;
@@ -231,11 +233,7 @@ public class ContactListFragment extends EaseContactListFragment {
 	}
 
 
-	/**
-	 * delete contact
-	 * 
-	 * @param toDeleteUser
-	 */
+
 	public void deleteContact(final EaseUser tobeDeleteUser) {
 		String st1 = getResources().getString(R.string.deleting);
 		final String st2 = getResources().getString(R.string.Delete_failed);
