@@ -8,10 +8,9 @@
     <com.hyphenate.easeui.widget.EaseTitleBar
         android:id="@+id/title_bar"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        app:titleBarRightImage="@drawable/em_add"
-        app:titleBarTitle="微信">
+        app:titleBarRightImage="@drawable/em_add">
 
     </com.hyphenate.easeui.widget.EaseTitleBar>
 
@@ -19,7 +18,9 @@
         android:id="@+id/layout_viewpage"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@id/title_bar"
         android:paddingBottom="48dp">
+
 
     </cn.ucai.superwechat.widget.MFViewPager>
 
@@ -61,7 +62,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 app:drawableTop="@drawable/tab_find"
-                app:tabtext="@string/discover"></cn.ucai.superwechat.widget.DMTabButton>
+                app:tabtext="@string/discover" />
 
             <cn.ucai.superwechat.widget.DMTabButton
                 android:layout_width="match_parent"
@@ -72,9 +73,5 @@
         </cn.ucai.superwechat.widget.DMTabHost>
     </LinearLayout>
 
-    <RelativeLayout
-        android:id="@+id/fragment_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@id/main_bottom" />
+
 </RelativeLayout>

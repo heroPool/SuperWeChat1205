@@ -99,11 +99,9 @@ public class ContactListFragment extends EaseContactListFragment {
     @SuppressWarnings("unchecked")
     @Override
     protected void setUpView() {
-        TitlePopup titlePopup = new TitlePopup(getContext());
-        titlePopup.addAction(new ActionItem(getContext(), getString(R.string.menu_groupchat), R.drawable.icon_menu_group));
-        titlePopup.addAction(new ActionItem(getContext(), getString(R.string.menu_addfriend), R.drawable.icon_menu_addfriend));
-        titlePopup.addAction(new ActionItem(getContext(), getString(R.string.menu_qrcode), R.drawable.icon_menu_sao));
-        titlePopup.addAction(new ActionItem(getContext(), getString(R.string.menu_money), R.drawable.icon_menu_money));
+        hideTitleBar();
+
+
 
 
 

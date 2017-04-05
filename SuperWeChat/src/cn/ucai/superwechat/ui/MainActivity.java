@@ -48,7 +48,9 @@ import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMConversation.EMConversationType;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.easeui.utils.EaseCommonUtils;
+import com.hyphenate.easeui.widget.EaseTitleBar;
 import com.hyphenate.util.EMLog;
+import com.hyphenate.util.NetUtils;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.update.UmengUpdateAgent;
 
@@ -66,6 +68,10 @@ import cn.ucai.superwechat.runtimepermissions.PermissionsManager;
 import cn.ucai.superwechat.runtimepermissions.PermissionsResultAction;
 import cn.ucai.superwechat.widget.DMTabHost;
 import cn.ucai.superwechat.widget.MFViewPager;
+import cn.ucai.superwechat.widget.TitleMenu.ActionItem;
+import cn.ucai.superwechat.widget.TitleMenu.TitlePopup;
+
+import static com.baidu.mapapi.BMapManager.getContext;
 
 @SuppressLint("NewApi")
 public class MainActivity extends BaseActivity implements ViewPager.OnPageChangeListener, DMTabHost.OnCheckedChangeListener {
@@ -81,6 +87,8 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     RelativeLayout fragmentContainer;
     @BindView(R.id.mainLayout)
     RelativeLayout mainLayout;
+    @BindView(R.id.title_bar)
+    EaseTitleBar titleBar;
     // textview for unread message count
 //    private TextView unreadLabel;
 //    // textview for unread event message
@@ -96,6 +104,7 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     // user account was removed
     private boolean isCurrentAccountRemoved = false;
 
+    TitlePopup titlePopup;
 
     /**
      * check if current user account was remove
@@ -223,6 +232,34 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
 //        mTabs[2] = (Button) findViewById(R.id.btn_setting);
 //        // select first tab
 //        mTabs[0].setSelected(true);
+        titleBar.setRightLayoutClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (NetUtils.hasDataConnection(MainActivity.this)) {
+                    showPup();
+                }
+            }
+        });
+
+
+        titlePopup = new TitlePopup(getContext());
+        titlePopup.addAction(new ActionItem(getContext(), getString(R.string.menu_groupchat), R.drawable.icon_menu_group));
+        titlePopup.addAction(new ActionItem(getContext(), getString(R.string.menu_addfriend), R.drawable.icon_menu_addfriend));
+        titlePopup.addAction(new ActionItem(getContext(), getString(R.string.menu_qrcode), R.drawable.icon_menu_sao));
+        titlePopup.addAction(new ActionItem(getContext(), getString(R.string.menu_money), R.drawable.icon_menu_money));
+        titlePopup.setItemOnClickListener(new TitlePopup.OnItemOnClickListener() {
+            @Override
+            public void onItemClick(ActionItem item, int position) {
+                if (position == 1) {
+                    startActivity(new Intent(MainActivity.this, AddContactActivity.class));
+                }
+            }
+        });
+    }
+
+    private void showPup() {
+        titlePopup.show(titleBar);
+
     }
 
     /**
@@ -539,6 +576,7 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     private ConversationListFragment conversationListFragment;
     private BroadcastReceiver broadcastReceiver;
     private LocalBroadcastManager broadcastManager;
+
     private int getExceptionMessageId(String exceptionType) {
         if (exceptionType.equals(Constant.ACCOUNT_CONFLICT)) {
             return R.string.connect_conflict;

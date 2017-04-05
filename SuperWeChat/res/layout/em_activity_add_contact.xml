@@ -1,32 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#f2f2f2"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
-
-    <RelativeLayout
-        android:id="@+id/title"
+    <com.hyphenate.easeui.widget.EaseTitleBar
+        android:id="@+id/title_bar"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/height_top_bar"
-        android:background="@color/top_bar_normal_bg"
-        android:gravity="center_vertical">
+        android:layout_height="wrap_content"
 
-        <include layout="@layout/ease_commom_back_btn" />
+        app:titleBarLeftImage="@drawable/em_mm_title_back"
+        app:titleBarTitle="@string/add_friend">
 
-        <TextView
-            android:id="@+id/add_list_friends"
+        <Button
+            android:id="@+id/btn_search"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:textColor="#fff"
-            android:textSize="18sp" />
-        
-        <Button
-            android:id="@+id/search"
-            android:layout_width="54dp"
-            android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:background="@drawable/ease_common_tab_bg"
@@ -34,27 +25,29 @@
             android:text="@string/button_search"
             android:textColor="#fff"
             android:textSize="16sp" />
-    </RelativeLayout>
+
+    </com.hyphenate.easeui.widget.EaseTitleBar>
+
 
     <EditText
         android:id="@+id/edit_note"
         android:layout_width="match_parent"
         android:layout_height="39dp"
         android:layout_margin="10dp"
-        android:paddingLeft="5dp"
         android:background="@drawable/em_button_normal_shape"
         android:hint="@string/user_name"
+        android:paddingLeft="5dp"
         android:singleLine="true"
         android:textColorHint="#b3b3b3"
         android:textSize="18sp" />
 
     <RelativeLayout
-        android:id="@+id/ll_user"
+        android:id="@+id/ll_user_result"
+
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:background="@drawable/ease_mm_listitem"
         android:duplicateParentState="true"
-        android:visibility="gone">
+        >
 
         <ImageView
             android:id="@+id/avatar"
@@ -71,6 +64,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="18dp"
+            android:text="@string/addcontact_search_no_result"
             android:layout_toRightOf="@id/avatar"
             android:textColor="#0F0F0F"
             android:textSize="16sp" />
