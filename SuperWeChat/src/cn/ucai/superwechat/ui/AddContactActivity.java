@@ -14,6 +14,7 @@
 package cn.ucai.superwechat.ui;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -29,6 +30,7 @@ import com.hyphenate.easeui.widget.EaseTitleBar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cn.ucai.superwechat.I;
 import cn.ucai.superwechat.R;
 import cn.ucai.superwechat.net.OnCompleteListener;
 import cn.ucai.superwechat.net.UserRegisterModel;
@@ -56,6 +58,7 @@ public class AddContactActivity extends BaseActivity {
     UserRegisterModel userRegisterModel;
     private String toAddUsername;
     private ProgressDialog progressDialog;
+    User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,7 +86,15 @@ public class AddContactActivity extends BaseActivity {
             new EaseAlertDialog(this, R.string.Please_enter_a_username).show();
             return;
         }
+        showDialog();
+
         searchUser();
+    }
+
+    private void showDialog() {
+        progressDialog = new ProgressDialog(AddContactActivity.this);
+        progressDialog.setMessage(getString(R.string.addcontact_search));
+        progressDialog.show();
     }
 
     private void searchUser() {
@@ -94,6 +105,8 @@ public class AddContactActivity extends BaseActivity {
                 if (result != null) {
                     Result resultFromJson = ResultUtils.getResultFromJson(result, User.class);
                     if (resultFromJson != null && resultFromJson.isRetMsg()) {
+                        user = (User) resultFromJson.getRetData();
+
                         success = true;
                     }
                     showResult(success);
@@ -102,16 +115,18 @@ public class AddContactActivity extends BaseActivity {
 
             @Override
             public void onError(String error) {
-                showResult(false);         
-                
+                showResult(false);
+
             }
         });
     }
 
     private void showResult(boolean success) {
+        progressDialog.dismiss();
+
         llUserResult.setVisibility(success ? View.GONE : View.VISIBLE);
         if (success) {
-
+            startActivity(new Intent(this, FriendsDetailsActivity.class).putExtra(I.User.TABLE_NAME, user));
         }
     }
 

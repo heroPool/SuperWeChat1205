@@ -8,6 +8,13 @@
     android:orientation="vertical"
     tools:context="cn.ucai.superwechat.ui.FriendsDetailsActivity">
 
+    <com.hyphenate.easeui.widget.EaseTitleBar
+        android:id="@+id/title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:titleBarLeftImage="@drawable/em_mm_title_back"
+        app:titleBarTitle="@string/title_user_profile" />
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="60dp"
@@ -60,19 +67,33 @@
     </RelativeLayout>
 
     <Button
+        android:id="@+id/btn_add_contact"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
         android:background="@drawable/btn_bg_green"
-        android:text="@string/userinfo_btn_send_msg" />
+        android:text="@string/userinfo_btn_add_contact"
+        android:textColor="#fff"
+        android:visibility="gone" />
 
     <Button
+        android:id="@+id/btn_send_msg"
 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:background="@drawable/btn_bg_green"
+        android:text="@string/userinfo_btn_send_msg"
+        android:textColor="#fff"
+        android:textSize="18sp"
+        android:visibility="gone" />
 
+    <Button
         android:id="@+id/btn_send_video"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
-        android:background="#fff"
-        android:text="@string/userinfo_btn_send_video" />
+        android:background="@drawable/setting_item_selector"
+        android:text="@string/userinfo_btn_send_video"
+        android:visibility="gone" />
 </LinearLayout>
