@@ -197,7 +197,6 @@ public class UserProfileManager {
                     }
                 }
                 appContext.sendBroadcast(new Intent(I.REQUEST_UPDATE_AVATAR).putExtra(I.Avatar.UPDATE_TIME, isSuccess));
-
             }
 
             @Override
