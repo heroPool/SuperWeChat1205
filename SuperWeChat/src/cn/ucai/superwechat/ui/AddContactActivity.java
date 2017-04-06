@@ -17,6 +17,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -56,6 +57,8 @@ public class AddContactActivity extends BaseActivity {
     RelativeLayout llUserResult;
 
     UserRegisterModel userRegisterModel;
+    @BindView(R.id.search_no_result)
+    TextView searchNoResult;
     private String toAddUsername;
     private ProgressDialog progressDialog;
     User user;
@@ -74,7 +77,6 @@ public class AddContactActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 finish();
-
             }
         });
     }
@@ -106,8 +108,8 @@ public class AddContactActivity extends BaseActivity {
                     Result resultFromJson = ResultUtils.getResultFromJson(result, User.class);
                     if (resultFromJson != null && resultFromJson.isRetMsg()) {
                         user = (User) resultFromJson.getRetData();
-
-                        success = true;
+                        Log.e("AddContactActivity", user.toString());
+                        success = resultFromJson.isRetMsg();
                     }
                     showResult(success);
                 }
@@ -123,11 +125,14 @@ public class AddContactActivity extends BaseActivity {
 
     private void showResult(boolean success) {
         progressDialog.dismiss();
-
-        llUserResult.setVisibility(success ? View.GONE : View.VISIBLE);
         if (success) {
+            Log.e(AddContactActivity.class.getSimpleName(), user.toString());
             startActivity(new Intent(this, FriendsDetailsActivity.class).putExtra(I.User.TABLE_NAME, user));
         }
+        if (!success) {
+            searchNoResult.setVisibility(View.VISIBLE);
+        }
+
     }
 
 //    public void addContact(View view) {

@@ -1,6 +1,8 @@
 package cn.ucai.superwechat.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -38,6 +40,7 @@ public class FriendsDetailsActivity extends BaseActivity {
     @BindView(R.id.title_bar)
     EaseTitleBar titleBar;
     User user;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,13 +51,12 @@ public class FriendsDetailsActivity extends BaseActivity {
     }
 
     private void initData() {
-         user = (User) getIntent().getSerializableExtra(I.User.TABLE_NAME);
-
+        user = (User) getIntent().getSerializableExtra(I.User.TABLE_NAME);
+        Log.e(FriendsDetailsActivity.class.getSimpleName(), user.toString());
         if (user != null) {
             showUserInfo();
         } else {
             finish();
-
         }
     }
 
@@ -66,18 +68,17 @@ public class FriendsDetailsActivity extends BaseActivity {
         textFriendsdetaiUsername.setText(user.getMUserName());
         EaseUserUtils.setAppUserAvatar(FriendsDetailsActivity.this, user.getMUserName(), imageFriendsdetailsAvatar);
         EaseUserUtils.setAppUserNick(user.getMUserName(), textFriendsdetailsNick);
-
         showFriend(isFriend);
     }
 
     private void showFriend(boolean isFriend) {
-        btnAddContact.setVisibility(isFriend ? View.GONE : View.VISIBLE);
+        btnAddContact.setVisibility(isFriend ? View.VISIBLE : View.GONE);
         btnSendMsg.setVisibility(isFriend ? View.GONE : View.VISIBLE);
         btnSendVideo.setVisibility(isFriend ? View.GONE : View.VISIBLE);
-
     }
 
     private void initView() {
+        getActionBar().hide();
         titleBar.setLeftLayoutClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -93,6 +94,14 @@ public class FriendsDetailsActivity extends BaseActivity {
             case R.id.layout_setting_notes:
                 break;
             case R.id.btn_add_contact:
+                boolean isConfirm = true;
+                if (isConfirm) {
+                    startActivity(new Intent(this, SearchUserActivity.class).putExtra(I.User.TABLE_NAME, user.getMUserName()));
+
+                } else {
+
+                }
+
                 break;
             case R.id.btn_send_msg:
                 break;

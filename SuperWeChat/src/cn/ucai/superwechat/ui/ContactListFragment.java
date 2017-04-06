@@ -41,8 +41,6 @@ import cn.ucai.superwechat.SuperWeChatHelper.DataSyncListener;
 import cn.ucai.superwechat.db.InviteMessgeDao;
 import cn.ucai.superwechat.db.UserDao;
 import cn.ucai.superwechat.widget.ContactItemView;
-import cn.ucai.superwechat.widget.TitleMenu.ActionItem;
-import cn.ucai.superwechat.widget.TitleMenu.TitlePopup;
 
 /**
  * contact list
@@ -89,7 +87,7 @@ public class ContactListFragment extends EaseContactListFragment {
             inviteMessgeDao = new InviteMessgeDao(getActivity());
         }
         if (inviteMessgeDao.getUnreadMessagesCount() > 0) {
-            applicationItem.showUnreadMsgView();
+            applicationItem.setUnreadCount(inviteMessgeDao.getUnreadMessagesCount());
         } else {
             applicationItem.hideUnreadMsgView();
         }
@@ -100,9 +98,6 @@ public class ContactListFragment extends EaseContactListFragment {
     @Override
     protected void setUpView() {
         hideTitleBar();
-
-
-
 
 
 //        titleBar.setRightLayoutClickListener(new OnClickListener() {

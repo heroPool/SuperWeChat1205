@@ -36,21 +36,23 @@
             android:layout_marginTop="10dp"
             android:layout_toRightOf="@id/image_friendsdetails_avatar"
             android:text="nick"
+            android:textColor="#000"
             android:textSize="18sp" />
 
         <TextView
             android:id="@+id/text_friendsdetai_username"
-
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/text_friendsdetails_nick"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="5dp"
             android:layout_toRightOf="@id/image_friendsdetails_avatar"
-            android:text="uername" />
+            android:text="uername"
+            android:textColor="#000" />
     </RelativeLayout>
 
     <RelativeLayout
+
         android:id="@+id/layout_setting_notes"
         android:layout_width="match_parent"
         android:layout_height="45dp"
@@ -63,7 +65,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
             android:text="@string/userinfo_txt_note_mark"
-            android:textStyle="bold" />
+            android:textColor="#616161" />
     </RelativeLayout>
 
     <Button
@@ -74,11 +76,11 @@
         android:background="@drawable/btn_bg_green"
         android:text="@string/userinfo_btn_add_contact"
         android:textColor="#fff"
+        android:textSize="18sp"
         android:visibility="gone" />
 
     <Button
         android:id="@+id/btn_send_msg"
-
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
@@ -93,7 +95,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
-        android:background="@drawable/setting_item_selector"
+        android:background="@drawable/btn_bg_gray"
         android:text="@string/userinfo_btn_send_video"
+        android:textColor="#000"
         android:visibility="gone" />
 </LinearLayout>

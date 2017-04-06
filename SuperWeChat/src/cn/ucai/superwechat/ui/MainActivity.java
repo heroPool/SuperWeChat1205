@@ -28,7 +28,6 @@ import android.os.PowerManager;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.view.KeyEvent;
@@ -71,8 +70,6 @@ import cn.ucai.superwechat.widget.MFViewPager;
 import cn.ucai.superwechat.widget.TitleMenu.ActionItem;
 import cn.ucai.superwechat.widget.TitleMenu.TitlePopup;
 
-import static com.baidu.mapapi.BMapManager.getContext;
-
 @SuppressLint("NewApi")
 public class MainActivity extends BaseActivity implements ViewPager.OnPageChangeListener, DMTabHost.OnCheckedChangeListener {
 
@@ -83,8 +80,7 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     DMTabHost layoutTabhost;
     @BindView(R.id.main_bottom)
     LinearLayout mainBottom;
-    @BindView(R.id.fragment_container)
-    RelativeLayout fragmentContainer;
+
     @BindView(R.id.mainLayout)
     RelativeLayout mainLayout;
     @BindView(R.id.title_bar)
@@ -242,11 +238,12 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
         });
 
 
-        titlePopup = new TitlePopup(getContext());
-        titlePopup.addAction(new ActionItem(getContext(), getString(R.string.menu_groupchat), R.drawable.icon_menu_group));
-        titlePopup.addAction(new ActionItem(getContext(), getString(R.string.menu_addfriend), R.drawable.icon_menu_addfriend));
-        titlePopup.addAction(new ActionItem(getContext(), getString(R.string.menu_qrcode), R.drawable.icon_menu_sao));
-        titlePopup.addAction(new ActionItem(getContext(), getString(R.string.menu_money), R.drawable.icon_menu_money));
+        titlePopup = new TitlePopup(this);
+
+        titlePopup.addAction(new ActionItem(this, getString(R.string.menu_groupchat), R.drawable.icon_menu_group));
+        titlePopup.addAction(new ActionItem(this, getString(R.string.menu_addfriend), R.drawable.icon_menu_addfriend));
+        titlePopup.addAction(new ActionItem(this, getString(R.string.menu_qrcode), R.drawable.icon_menu_sao));
+        titlePopup.addAction(new ActionItem(this, getString(R.string.menu_money), R.drawable.icon_menu_money));
         titlePopup.setItemOnClickListener(new TitlePopup.OnItemOnClickListener() {
             @Override
             public void onItemClick(ActionItem item, int position) {
@@ -279,14 +276,14 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
 //                index = 2;
 //                break;
         }
-        if (currentTabIndex != index) {
-            FragmentTransaction trx = getSupportFragmentManager().beginTransaction();
-            trx.hide(fragments[currentTabIndex]);
-            if (!fragments[index].isAdded()) {
-                trx.add(R.id.fragment_container, fragments[index]);
-            }
-            trx.show(fragments[index]).commit();
-        }
+//        if (currentTabIndex != index) {
+//            FragmentTransaction trx = getSupportFragmentManager().beginTransaction();
+//            trx.hide(fragments[currentTabIndex]);
+//            if (!fragments[index].isAdded()) {
+//                trx.add(R.id.fragment_container, fragments[index]);
+//            }
+//            trx.show(fragments[index]).commit();
+//        }
 //        mTabs[currentTabIndex].setSelected(false);
 //        // set current tab selected
 //        mTabs[index].setSelected(true);

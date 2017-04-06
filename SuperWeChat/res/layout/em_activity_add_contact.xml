@@ -5,15 +5,12 @@
     android:layout_height="match_parent"
     android:background="#f2f2f2"
     android:orientation="vertical">
-
     <com.hyphenate.easeui.widget.EaseTitleBar
         android:id="@+id/title_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
         app:titleBarLeftImage="@drawable/em_mm_title_back"
         app:titleBarTitle="@string/add_friend">
-
         <Button
             android:id="@+id/btn_search"
             android:layout_width="wrap_content"
@@ -41,13 +38,22 @@
         android:textColorHint="#b3b3b3"
         android:textSize="18sp" />
 
+    <TextView
+        android:id="@+id/search_no_result"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:visibility="gone"
+
+        android:text="该用户不存在！"
+        android:textSize="18sp" />
+
     <RelativeLayout
         android:id="@+id/ll_user_result"
-
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:duplicateParentState="true"
-        >
+        android:visibility="gone">
 
         <ImageView
             android:id="@+id/avatar"
@@ -64,8 +70,8 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="18dp"
-            android:text="@string/addcontact_search_no_result"
             android:layout_toRightOf="@id/avatar"
+            android:text="@string/addcontact_search_no_result"
             android:textColor="#0F0F0F"
             android:textSize="16sp" />
 

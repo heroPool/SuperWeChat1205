@@ -10,7 +10,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        app:titleBarRightImage="@drawable/em_add">
+
+        app:titleBarRightImage="@drawable/em_add"
+        app:titleBarTitle="@string/app_name">
 
     </com.hyphenate.easeui.widget.EaseTitleBar>
 
