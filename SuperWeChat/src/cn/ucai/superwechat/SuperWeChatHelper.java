@@ -57,6 +57,9 @@ import cn.ucai.superwechat.domain.EmojiconExampleGroupData;
 import cn.ucai.superwechat.domain.InviteMessage;
 import cn.ucai.superwechat.domain.InviteMessage.InviteMesageStatus;
 import cn.ucai.superwechat.domain.RobotUser;
+import cn.ucai.superwechat.net.IUserRegisterModel;
+import cn.ucai.superwechat.net.OnCompleteListener;
+import cn.ucai.superwechat.net.UserRegisterModel;
 import cn.ucai.superwechat.parse.UserProfileManager;
 import cn.ucai.superwechat.receiver.CallReceiver;
 import cn.ucai.superwechat.ui.ChatActivity;
@@ -64,6 +67,8 @@ import cn.ucai.superwechat.ui.MainActivity;
 import cn.ucai.superwechat.ui.VideoCallActivity;
 import cn.ucai.superwechat.ui.VoiceCallActivity;
 import cn.ucai.superwechat.utils.PreferenceManager;
+import cn.ucai.superwechat.utils.Result;
+import cn.ucai.superwechat.utils.ResultUtils;
 
 public class SuperWeChatHelper {
     /**
@@ -128,6 +133,7 @@ public class SuperWeChatHelper {
 
     private InviteMessgeDao inviteMessgeDao;
     private UserDao userDao;
+    private IUserRegisterModel userModel;
 
     private LocalBroadcastManager broadcastManager;
 
@@ -150,6 +156,7 @@ public class SuperWeChatHelper {
      */
     public void init(Context context) {
         demoModel = new SuperWeChatModel(context);
+        userModel = new UserRegisterModel();
         EMOptions options = initChatOptions();
         //use default options if options is null
         if (EaseUI.getInstance().init(context, options)) {
@@ -799,11 +806,36 @@ public class SuperWeChatHelper {
         if (inviteMessgeDao == null) {
             inviteMessgeDao = new InviteMessgeDao(appContext);
         }
-        inviteMessgeDao.saveMessage(msg);
+        syncUserInfoAddToMsg(msg);
         //increase the unread message count
         inviteMessgeDao.saveUnreadMessageCount(1);
         // notify there is new message
         getNotifier().vibrateAndPlayTone(null);
+    }
+
+    private void syncUserInfoAddToMsg(final InviteMessage msg) {
+        userModel.loadUserInfo(appContext, msg.getFrom(), new OnCompleteListener<String>() {
+            @Override
+            public void onSuccess(String result) {
+                if (result != null) {
+                    Result resultFromJson = ResultUtils.getResultFromJson(result, User.class);
+                    if (resultFromJson != null && resultFromJson.isRetMsg()) {
+                        User user = (User) resultFromJson.getRetData();
+                        if (user != null) {
+                            msg.setNickname(user.getMUserNick());
+                            msg.setAvatar(user.getAvatar());
+                        }
+
+                    }
+                }
+                inviteMessgeDao.saveMessage(msg);
+            }
+
+            @Override
+            public void onError(String error) {
+                inviteMessgeDao.saveMessage(msg);
+            }
+        });
     }
 
     /**
@@ -835,6 +867,7 @@ public class SuperWeChatHelper {
         }
         return user;
     }
+
     private User getAppUserInfo(String username) {
         // To get instance of EaseUser, here we get it from the user list in memory
         // You'd better cache it if you get it from your server
@@ -851,6 +884,7 @@ public class SuperWeChatHelper {
 //        }
         return user;
     }
+
     /**
      * Global listener
      * If this event already handled by an activity, you don't need handle it again

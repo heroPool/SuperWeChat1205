@@ -54,7 +54,7 @@ public class EaseUserUtils {
         }
     }
 
-    private static void setAvatar(Context context, String avatar, ImageView imageView) {
+    public static void setAvatar(Context context, String avatar, ImageView imageView) {
         if (avatar != null) {
             try {
                 int avatarResId = Integer.parseInt(avatar);

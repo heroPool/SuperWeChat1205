@@ -25,7 +25,7 @@ public class InviteMessage {
 	private String nickname;
 
 	public String getNickname() {
-		return nickname;
+		return nickname == null ? from : nickname;
 	}
 
 	public void setNickname(String nickname) {
