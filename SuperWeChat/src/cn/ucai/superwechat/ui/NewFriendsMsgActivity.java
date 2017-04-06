@@ -42,7 +42,7 @@ public class NewFriendsMsgActivity extends BaseActivity {
 		NewFriendsMsgAdapter adapter = new NewFriendsMsgAdapter(this, 1, msgs);
 		listView.setAdapter(adapter);
 		dao.saveUnreadMessageCount(0);
-		
+
 	}
 
 	public void back(View view) {
