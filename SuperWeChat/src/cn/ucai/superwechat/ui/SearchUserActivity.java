@@ -45,7 +45,6 @@ public class SearchUserActivity extends BaseActivity {
             finish();
         }
     }
-
     private void initView() {
         titleBar.setLeftLayoutClickListener(new View.OnClickListener() {
             @Override

@@ -396,7 +396,7 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     @Override
     public void onPageSelected(int position) {
         layoutTabhost.setChecked(position);
-
+        currentTabIndex = position;
     }
 
     @Override
@@ -407,7 +407,7 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     @Override
     public void onCheckedChange(int checkedPosition, boolean byUser) {
         layoutViewpage.setCurrentItem(checkedPosition);
-
+        currentTabIndex = checkedPosition;
     }
 
     public class MyContactListener implements EMContactListener {
@@ -485,7 +485,8 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     public void updateUnreadAddressLable() {
         runOnUiThread(new Runnable() {
             public void run() {
-//                int count = getUnreadAddressCountTotal();
+                int count = getUnreadAddressCountTotal();
+                layoutTabhost.setHasNew(1, count > 0);
 //                if (count > 0) {
 //                    unreadAddressLable.setVisibility(View.VISIBLE);
 //                } else {

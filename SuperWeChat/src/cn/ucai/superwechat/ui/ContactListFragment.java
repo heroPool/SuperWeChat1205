@@ -183,7 +183,6 @@ public class ContactListFragment extends EaseContactListFragment {
                     startActivity(new Intent(getActivity(), NewFriendsMsgActivity.class));
                     break;
                 case R.id.group_item:
-
                     // 进入群聊列表页面
                     startActivity(new Intent(getActivity(), GroupsActivity.class));
                     break;
