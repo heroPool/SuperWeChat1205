@@ -1,5 +1,6 @@
 package cn.ucai.superwechat.ui;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,7 +20,13 @@ import butterknife.OnClick;
 import cn.ucai.superwechat.I;
 import cn.ucai.superwechat.R;
 import cn.ucai.superwechat.SuperWeChatHelper;
+import cn.ucai.superwechat.db.InviteMessgeDao;
 import cn.ucai.superwechat.domain.InviteMessage;
+import cn.ucai.superwechat.net.IUserRegisterModel;
+import cn.ucai.superwechat.net.OnCompleteListener;
+import cn.ucai.superwechat.net.UserRegisterModel;
+import cn.ucai.superwechat.utils.Result;
+import cn.ucai.superwechat.utils.ResultUtils;
 
 
 public class FriendsDetailsActivity extends BaseActivity {
@@ -41,6 +48,9 @@ public class FriendsDetailsActivity extends BaseActivity {
     @BindView(R.id.title_bar)
     EaseTitleBar titleBar;
     User user;
+    IUserRegisterModel model;
+    InviteMessage msg;
+    boolean isFriend = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,12 +62,13 @@ public class FriendsDetailsActivity extends BaseActivity {
     }
 
     private void initData() {
+        model = new UserRegisterModel();
         user = (User) getIntent().getSerializableExtra(I.User.TABLE_NAME);
         Log.e(FriendsDetailsActivity.class.getSimpleName(), user.toString());
         if (user != null) {
             showUserInfo();
         } else {
-            InviteMessage msg = (InviteMessage) getIntent().getSerializableExtra(I.User.NICK);
+             msg = (InviteMessage) getIntent().getSerializableExtra(I.User.NICK);
             if (msg != null) {
                 user = new User(msg.getFrom());
                 user.setMUserNick(msg.getNickname());
@@ -71,7 +82,7 @@ public class FriendsDetailsActivity extends BaseActivity {
     }
 
     private void showUserInfo() {
-        boolean isFriend = SuperWeChatHelper.getInstance().getAppContactList().containsKey(user.getMUserName());
+         isFriend = SuperWeChatHelper.getInstance().getAppContactList().containsKey(user.getMUserName());
         if (isFriend) {
             SuperWeChatHelper.getInstance().saveAppContact(user);
         }
@@ -83,7 +94,36 @@ public class FriendsDetailsActivity extends BaseActivity {
     }
 
     private void syncUserInfo() {
+        model.loadUserInfo(FriendsDetailsActivity.this, user.getMUserName(),
+                new OnCompleteListener<String>() {
+                    @Override
+                    public void onSuccess(String s) {
+                        if (s!=null){
+                            Result result = ResultUtils.getResultFromJson(s,User.class);
+                            if (result!=null && result.isRetMsg()){
+                                User u = (User) result.getRetData();
+                                if (u!=null){
+                                    if (msg!=null) {
+                                        //update msg
+                                        ContentValues values = new ContentValues();
+                                        values.put(InviteMessgeDao.COLUMN_NAME_NICK, u.getMUserNick());
+                                        values.put(InviteMessgeDao.COLUMN_NAME_AVATAR, u.getAvatar());
+                                        InviteMessgeDao dao = new InviteMessgeDao(FriendsDetailsActivity.this);
+                                        dao.updateMessage(msg.getId(),values);
+                                    }else if(isFriend) {
+                                        //update user
+                                        SuperWeChatHelper.getInstance().saveAppContact(u);
+                                    }
+                                }
+                            }
+                        }
+                    }
 
+                    @Override
+                    public void onError(String error) {
+
+                    }
+                });
     }
 
     private void showFriend(boolean isFriend) {

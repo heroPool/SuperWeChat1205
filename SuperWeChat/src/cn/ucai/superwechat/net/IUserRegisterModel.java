@@ -20,4 +20,6 @@ public interface IUserRegisterModel {
     void updateUserNick(Context context, String username, String usernick, OnCompleteListener<String> listener);
 
     void updateAvatar(Context context, String username, File file, OnCompleteListener<String> listener);
+
+    void addContact(Context cOntext, String username, String cname, OnCompleteListener<String> listener);
 }
