@@ -283,7 +283,6 @@ public class SuperWeChatDBManager {
             if (cursor.moveToFirst()) {
                 id = cursor.getInt(0);
             }
-
             cursor.close();
         }
         return id;
