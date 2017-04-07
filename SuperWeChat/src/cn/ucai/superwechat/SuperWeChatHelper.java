@@ -739,7 +739,7 @@ public class SuperWeChatHelper {
             broadcastManager.sendBroadcast(new Intent(Constant.ACTION_CONTACT_CHANAGED));
         }
 
-        private void onAppContactAdded(String username) {
+        private void onAppContactAdded(final String username) {
             userModel.addContact(appContext, EMClient.getInstance().getCurrentUser(), username,
                     new OnCompleteListener<String>() {
                         @Override
@@ -748,10 +748,17 @@ public class SuperWeChatHelper {
                                 Result result = ResultUtils.getResultFromJson(s, User.class);
                                 if (result != null && result.isRetMsg()) {
                                     User u = (User) result.getRetData();
-                                    if (u != null) {//保存到内存
+                                    if (u != null) {
                                         //保存到数据库
-                                        //通知联系人列表更新
 
+                                        Map<String, User> appContactList = getAppContactList();
+                                        if (!appContactList.containsKey(username)) {
+                                            userDao.saveAppContact(u);
+                                        }
+                                        //保存到内存
+                                        appContactList.put(u.getMUserName(), u);
+                                        //通知联系人列表更新		                                          //通知联系人列表更新
+                                        broadcastManager.sendBroadcast(new Intent(Constant.ACTION_CONTACT_CHANAGED));
                                     }
                                 }
                             }
