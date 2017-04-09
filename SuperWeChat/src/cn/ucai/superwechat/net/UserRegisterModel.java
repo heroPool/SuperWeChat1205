@@ -85,4 +85,14 @@ public class UserRegisterModel implements IUserRegisterModel {
                 .targetClass(String.class)
                 .execute(listener);
     }
+
+    @Override
+    public void loadCOntact(Context context, String username, OnCompleteListener<String> listener) {
+        OkHttpUtils<String> okhttps = new OkHttpUtils<>(context);
+        okhttps.setRequestUrl(I.REQUEST_DOWNLOAD_CONTACT_ALL_LIST)
+                .addParam(I.Contact.USER_NAME, username)
+                .targetClass(String.class)
+                .execute(listener);
+
+    }
 }

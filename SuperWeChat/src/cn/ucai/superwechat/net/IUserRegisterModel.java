@@ -22,4 +22,6 @@ public interface IUserRegisterModel {
     void updateAvatar(Context context, String username, File file, OnCompleteListener<String> listener);
 
     void addContact(Context cOntext, String username, String cname, OnCompleteListener<String> listener);
+
+    void loadCOntact(Context context, String username, OnCompleteListener<String> listener);
 }

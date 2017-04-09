@@ -1285,12 +1285,47 @@ public class SuperWeChatHelper {
         }
     }
 
+    public void asyncFetchAppContactsFromServer() {
+        if (isLoggedIn()) {
+            userModel.loadCOntact(appContext, EMClient.getInstance().getCurrentUser(), new OnCompleteListener<String>() {
+                @Override
+                public void onSuccess(String result) {
+                    if (result != null) {
+                        Result resultFromJson = ResultUtils.getListResultFromJson(result, User.class);
+                        if (resultFromJson != null && resultFromJson.isRetMsg()) {
+                            List<User> list = (List<User>) resultFromJson.getRetData();
+                            HashMap<String, User> userlist = new HashMap<>();
+                            for (User user : list
+                                    ) {
+                                EaseCommonUtils.setUserAppInitialLetter(user);
+                                userlist.put(user.getMUserName(), user);
+                            }
+                            getAppContactList().clear();//save the contact list to cache
+                            getAppContactList().putAll(userlist);
+                            //save the contact list to database
+                            UserDao dao = new UserDao(appContext);
+                            ArrayList<User> users = new ArrayList<>(userlist.values());
+                            dao.saveAppContactList(users);
+
+                        }
+
+                    }
+                }
+
+                @Override
+                public void onError(String error) {
+
+                }
+            });
+        }
+    }
     public void asyncFetchContactsFromServer(final EMValueCallBack<List<String>> callback) {
         if (isSyncingContactsWithServer) {
             return;
         }
 
         isSyncingContactsWithServer = true;
+        asyncFetchAppContactsFromServer();
 
         new Thread() {
             @Override
@@ -1458,6 +1493,8 @@ public class SuperWeChatHelper {
         isGroupAndContactListenerRegisted = false;
 
         setContactList(null);
+        setAppContactList(null);
+
         setRobotList(null);
         getUserProfileManager().reset();
         SuperWeChatDBManager.getInstance().closeDB();
