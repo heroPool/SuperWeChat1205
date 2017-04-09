@@ -1,7 +1,7 @@
 package cn.ucai.superwechat;
 
 public interface I {
-
+    String IS_FROM_CHAT = "cn.ucai.superwechat_is_chat";
     public static interface User {
         String TABLE_NAME = "t_superwechat_user";
         String USER_NAME = "m_user_name";                    //用户账号
@@ -130,7 +130,7 @@ public interface I {
     int MSG_ILLEGAL_REQUEST = -1;                                //非法请求
 
 
-//    http://101.251.196.90:8080/SuperWeChatServerV2.0/
+    //    http://101.251.196.90:8080/SuperWeChatServerV2.0/
     //	String SERVER_ROOT = "http://120.26.242.249:8080/SuperWeChatServerV2.0/";
     String SERVER_ROOT = "http://101.251.196.90:8080/SuperWeChatServerV2.0/";
 

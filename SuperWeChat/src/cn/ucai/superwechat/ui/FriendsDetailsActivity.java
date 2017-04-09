@@ -163,6 +163,7 @@ public class FriendsDetailsActivity extends BaseActivity {
 
                 break;
             case R.id.btn_send_msg:
+                finish();
                 startActivity(new Intent(this, ChatActivity.class).putExtra("userId", user.getMUserName()));
                 break;
             case R.id.btn_send_video:
