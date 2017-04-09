@@ -2,6 +2,7 @@ package cn.ucai.superwechat.ui;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -40,11 +41,14 @@ public class SearchUserActivity extends BaseActivity {
     }
 
     private void initData() {
-        toAddUserName = getIntent().getStringExtra(I.User.USER_NAME);
+        getActionBar().hide();
+        toAddUserName = getIntent().getStringExtra(I.User.TABLE_NAME);
+        Log.e(SearchUserActivity.class.getSimpleName(),"toAddUserName=" +toAddUserName);
         if (toAddUserName != null) {
             finish();
         }
     }
+
     private void initView() {
         titleBar.setLeftLayoutClickListener(new View.OnClickListener() {
             @Override
@@ -75,6 +79,7 @@ public class SearchUserActivity extends BaseActivity {
 
 
     public void addContact() {
+        Log.e(SearchUserActivity.class.getSimpleName(), "addContact 执行");
         if (EMClient.getInstance().getCurrentUser().equals(toAddUserName)) {
             new EaseAlertDialog(this, R.string.not_add_myself).show();
             return;

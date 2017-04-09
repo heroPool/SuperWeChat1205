@@ -12,6 +12,11 @@ public class User implements Serializable {
     private String mavatarLastUpdateTime;
 
     private String avatar;
+
+    public String getInitialLetter() {
+        return initialLetter;
+    }
+
     /**
      * initial letter for nickname
      */

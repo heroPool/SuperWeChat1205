@@ -3,16 +3,18 @@ package cn.ucai.superwechat.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.view.View;
+
 import cn.ucai.superwechat.R;
 import cn.ucai.superwechat.runtimepermissions.PermissionsManager;
+
 import com.hyphenate.easeui.ui.EaseChatFragment;
 import com.hyphenate.util.EasyUtils;
 
 /**
  * chat activity，EaseChatFragment was used {@link #EaseChatFragment}
- *
  */
-public class ChatActivity extends BaseActivity{
+public class ChatActivity extends BaseActivity {
     public static ChatActivity activityInstance;
     private EaseChatFragment chatFragment;
     String toChatUsername;
@@ -29,18 +31,18 @@ public class ChatActivity extends BaseActivity{
         //pass parameters to chat fragment
         chatFragment.setArguments(getIntent().getExtras());
         getSupportFragmentManager().beginTransaction().add(R.id.container, chatFragment).commit();
-        
+
     }
-    
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
         activityInstance = null;
     }
-    
+
     @Override
     protected void onNewIntent(Intent intent) {
-    	// make sure only one chat activity is opened
+        // make sure only one chat activity is opened
         String username = intent.getStringExtra("userId");
         if (toChatUsername.equals(username))
             super.onNewIntent(intent);
@@ -50,7 +52,7 @@ public class ChatActivity extends BaseActivity{
         }
 
     }
-    
+
     @Override
     public void onBackPressed() {
         chatFragment.onBackPressed();
@@ -59,13 +61,19 @@ public class ChatActivity extends BaseActivity{
             startActivity(intent);
         }
     }
-    
-    public String getToChatUsername(){
+
+    public String getToChatUsername() {
         return toChatUsername;
     }
 
-    @Override public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-        @NonNull int[] grantResults) {
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
         PermissionsManager.getInstance().notifyPermissionsChange(permissions, grantResults);
+    }
+
+    @Override
+    public void back(View view) {
+        super.back(view);
     }
 }

@@ -57,7 +57,9 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 app:drawableTop="@drawable/tab_contact_list"
-                app:tabtext="@string/contacts"></cn.ucai.superwechat.widget.DMTabButton>
+                app:tabtext="@string/contacts">
+
+            </cn.ucai.superwechat.widget.DMTabButton>
 
             <cn.ucai.superwechat.widget.DMTabButton
                 android:layout_width="match_parent"

@@ -66,9 +66,12 @@ public class PersonalCenterFragment extends Fragment {
 
     private void iniData() {
         String currentUser = EMClient.getInstance().getCurrentUser();
-        textUsername.setText(currentUser);
-        EaseUserUtils.setAppUserNick(currentUser, textUsernick);
-        EaseUserUtils.setAppUserAvatar(getContext(), currentUser, imagePersonalAvatar);
+        if (currentUser != null) {
+            textUsername.setText(currentUser);
+            EaseUserUtils.setAppUserNick(currentUser, textUsernick);
+            EaseUserUtils.setAppUserAvatar(getContext(), currentUser, imagePersonalAvatar);
+        }
+
     }
 
     @Override

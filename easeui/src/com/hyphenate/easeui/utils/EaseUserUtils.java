@@ -48,7 +48,7 @@ public class EaseUserUtils {
     public static void setUserAvatar(Context context, String username, ImageView imageView) {
         EaseUser user = getUserInfo(username);
         if (user != null) {
-            setAvatar(context, user.getAvatar(),  imageView);
+            setAvatar(context, user.getAvatar(), imageView);
         } else {
             Glide.with(context).load(R.drawable.ease_default_avatar).into(imageView);
         }
@@ -95,6 +95,7 @@ public class EaseUserUtils {
             Glide.with(context).load(R.drawable.ease_default_avatar).into(imageView);
         }
     }
+
     /**
      * set user's nickname
      */

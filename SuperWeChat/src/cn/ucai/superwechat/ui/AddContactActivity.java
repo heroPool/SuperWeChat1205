@@ -79,6 +79,7 @@ public class AddContactActivity extends BaseActivity {
                 finish();
             }
         });
+
     }
 
     public void searchContact(View v) {
