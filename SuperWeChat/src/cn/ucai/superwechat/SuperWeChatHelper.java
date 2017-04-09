@@ -774,8 +774,11 @@ public class SuperWeChatHelper {
         @Override
         public void onContactDeleted(String username) {
             Map<String, EaseUser> localUsers = SuperWeChatHelper.getInstance().getContactList();
+            SuperWeChatHelper.getInstance().getAppContactList().remove(username);
             localUsers.remove(username);
             userDao.deleteContact(username);
+            userDao.deleteAppContact(username);
+
             inviteMessgeDao.deleteMessage(username);
 
             EMClient.getInstance().chatManager().deleteConversation(username, false);
@@ -1101,10 +1104,14 @@ public class SuperWeChatHelper {
     }
 
     public Map<String, User> getAppContactList() {
-        if (isLoggedIn() && appcontactList == null) {
+        if (isLoggedIn() && appcontactList == null || appcontactList.size() == 0) {
+
             appcontactList = demoModel.getAppContactList();
         }
 
+        if (appcontactList != null) {
+
+        }
         // return a empty non-null object to avoid app crash
         if (appcontactList == null) {
             return new Hashtable<String, User>();
