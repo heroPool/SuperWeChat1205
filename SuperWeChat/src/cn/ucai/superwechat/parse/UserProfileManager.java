@@ -147,7 +147,7 @@ public class UserProfileManager {
             currentAppUser = new User(username);
             String nick = getCurrentUserNick();
             currentAppUser.setMUserNick((nick != null) ? nick : username);
-            currentAppUser.setMAvatarPath(getCurrentUserAvatar());
+            currentAppUser.setAvatar(getCurrentUserAvatar());
         }
         return currentAppUser;
     }

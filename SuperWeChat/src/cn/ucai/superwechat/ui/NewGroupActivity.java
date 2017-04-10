@@ -77,6 +77,8 @@ public class NewGroupActivity extends BaseActivity {
     IGroupModel model;
     User user;
 
+    File avatarFile;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -100,6 +102,7 @@ public class NewGroupActivity extends BaseActivity {
                 }
             }
         });
+
     }
 
     /**
@@ -111,7 +114,7 @@ public class NewGroupActivity extends BaseActivity {
             new EaseAlertDialog(this, R.string.Group_name_cannot_be_empty).show();
         } else {
             // select from contact list
-            startActivityForResult(new Intent(this, GroupPickContactsActivity.class).putExtra("groupName", name), 0);
+            startActivityForResult(new Intent(this, GroupPickContactsActivity.class).putExtra("groupName", name), I.REQUEST_CODE_PICK_CONTACT);
         }
     }
 
@@ -121,6 +124,7 @@ public class NewGroupActivity extends BaseActivity {
 
         String st1 = getResources().getString(R.string.Is_to_create_a_group_chat);
         final String st2 = getResources().getString(R.string.Failed_to_create_groups);
+
         if (resultCode == RESULT_OK) {
             //new group
 
@@ -170,7 +174,7 @@ public class NewGroupActivity extends BaseActivity {
     private void createAppGroup(EMGroup emGroup) {
         if (emGroup != null) {
             File file = null;
-            model.newGroup(this, emGroup.getGroupId(), emGroup.getGroupName(), emGroup.getDescription(), emGroup.getOwner(), emGroup.isPublic(), emGroup.isAllowInvites(), file, new OnCompleteListener<String>() {
+            model.newGroup(this, emGroup.getGroupId(), emGroup.getGroupName(), emGroup.getDescription(), emGroup.getOwner(), emGroup.isPublic(), emGroup.isAllowInvites(), avatarFile, new OnCompleteListener<String>() {
                 @Override
                 public void onSuccess(String s) {
                     boolean success = false;
@@ -216,12 +220,13 @@ public class NewGroupActivity extends BaseActivity {
             Bitmap photo = extras.getParcelable("data");
             Drawable drawable = new BitmapDrawable(getResources(), photo);
             imageGroupavatar.setImageDrawable(drawable);
-            uploadUserAvatar(saveBitmapFile(photo));
+            saveBitmapFile(photo);
+
         }
 
     }
 
-    private File saveBitmapFile(Bitmap bitmap) {
+    private void saveBitmapFile(Bitmap bitmap) {
         if (bitmap != null) {
             String imagePath = getAvatarPath(NewGroupActivity.this, I.AVATAR_TYPE) + "/" + getAvatarName() + ".jpg";
             File file = new File(imagePath);//将要保存图片的路径
@@ -234,15 +239,15 @@ public class NewGroupActivity extends BaseActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            return file;
+            avatarFile = file;
         }
-        return null;
+
     }
 
     String avatarName;
 
     private String getAvatarName() {
-        avatarName = user.getMUserName() + System.currentTimeMillis();
+        avatarName = I.AVATAR_TYPE_GROUP_PATH + System.currentTimeMillis();
         return avatarName;
     }
 
