@@ -102,6 +102,7 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragmentHe
             Map<String, RobotUser> robotMap = SuperWeChatHelper.getInstance().getRobotList();
             if (robotMap != null && robotMap.containsKey(toChatUsername)) {
                 isRobot = true;
+
             }
         }
         super.setUpView();

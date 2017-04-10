@@ -9,7 +9,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.hyphenate.chat.EMClient;
 import com.hyphenate.easeui.domain.User;
 import com.hyphenate.easeui.utils.EaseUserUtils;
 import com.hyphenate.easeui.widget.EaseTitleBar;
@@ -167,7 +169,18 @@ public class FriendsDetailsActivity extends BaseActivity {
                 startActivity(new Intent(this, ChatActivity.class).putExtra("userId", user.getMUserName()));
                 break;
             case R.id.btn_send_video:
+                startVideoCall();
                 break;
+        }
+    }
+    protected void startVideoCall() {
+        if (!EMClient.getInstance().isConnected())
+            Toast.makeText(this, R.string.not_connect_to_server, Toast.LENGTH_SHORT).show();
+        else {
+            startActivity(new Intent(this, VideoCallActivity.class).putExtra("username", user.getMUserName())
+                    .putExtra("isComingCall", false));
+            // videoCallBtn.setEnabled(false);
+//            inputMenu.hideExtendMenuContainer();
         }
     }
 }
