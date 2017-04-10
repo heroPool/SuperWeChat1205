@@ -51,7 +51,13 @@ import butterknife.OnClick;
 import cn.ucai.superwechat.I;
 import cn.ucai.superwechat.R;
 import cn.ucai.superwechat.SuperWeChatHelper;
+import cn.ucai.superwechat.db.GroupModel;
+import cn.ucai.superwechat.db.IGroupModel;
+import cn.ucai.superwechat.domain.Group;
+import cn.ucai.superwechat.net.OnCompleteListener;
 import cn.ucai.superwechat.utils.L;
+import cn.ucai.superwechat.utils.Result;
+import cn.ucai.superwechat.utils.ResultUtils;
 
 import static cn.ucai.superwechat.ui.UserProfileActivity.getAvatarPath;
 
@@ -68,7 +74,7 @@ public class NewGroupActivity extends BaseActivity {
     private TextView secondTextView;
     private static final int REQUESTCODE_PICK = 1;
     private static final int REQUESTCODE_CUTTING = 2;
-
+    IGroupModel model;
     User user;
 
     @Override
@@ -76,6 +82,7 @@ public class NewGroupActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.em_activity_new_group);
         ButterKnife.bind(this);
+        model = new GroupModel();
         groupNameEditText = (EditText) findViewById(R.id.edit_group_name);
         introductionEditText = (EditText) findViewById(R.id.edit_group_introduction);
         publibCheckBox = (CheckBox) findViewById(R.id.cb_public);
@@ -116,69 +123,91 @@ public class NewGroupActivity extends BaseActivity {
         final String st2 = getResources().getString(R.string.Failed_to_create_groups);
         if (resultCode == RESULT_OK) {
             //new group
-            switch (requestCode) {
-                case REQUESTCODE_PICK:
-                    if (data == null || data.getData() == null) {
-                        return;
-                    }
-                    startPhotoZoom(data.getData());
-                    break;
-                case REQUESTCODE_CUTTING:
-                    if (data != null) {
-                        setPicToView(data);
-                    }
-                    break;
-                case 0:
-                    progressDialog = new ProgressDialog(this);
-                    progressDialog.setMessage(st1);
-                    progressDialog.setCanceledOnTouchOutside(false);
-                    progressDialog.show();
 
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            final String groupName = groupNameEditText.getText().toString().trim();
-                            String desc = introductionEditText.getText().toString();
-                            String[] members = data.getStringArrayExtra("newmembers");
-                            try {
-                                EMGroupOptions option = new EMGroupOptions();
-                                option.maxUsers = 200;
-                                option.inviteNeedConfirm = true;
+            progressDialog = new ProgressDialog(this);
+            progressDialog.setMessage(st1);
+            progressDialog.setCanceledOnTouchOutside(false);
+            progressDialog.show();
 
-                                String reason = NewGroupActivity.this.getString(R.string.invite_join_group);
-                                reason = EMClient.getInstance().getCurrentUser() + reason + groupName;
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    final String groupName = groupNameEditText.getText().toString().trim();
+                    String desc = introductionEditText.getText().toString();
+                    String[] members = data.getStringArrayExtra("newmembers");
+                    try {
+                        EMGroupOptions option = new EMGroupOptions();
+                        option.maxUsers = 200;
+                        option.inviteNeedConfirm = true;
 
-                                if (publibCheckBox.isChecked()) {
-                                    option.style = memberCheckbox.isChecked() ? EMGroupStyle.EMGroupStylePublicJoinNeedApproval : EMGroupStyle.EMGroupStylePublicOpenJoin;
-                                } else {
-                                    option.style = memberCheckbox.isChecked() ? EMGroupStyle.EMGroupStylePrivateMemberCanInvite : EMGroupStyle.EMGroupStylePrivateOnlyOwnerInvite;
-                                }
-                                EMGroup group = EMClient.getInstance().groupManager().createGroup(groupName, desc, members, reason, option);
+                        String reason = NewGroupActivity.this.getString(R.string.invite_join_group);
+                        reason = EMClient.getInstance().getCurrentUser() + reason + groupName;
 
-                                runOnUiThread(new Runnable() {
-                                    public void run() {
-                                        progressDialog.dismiss();
-                                        setResult(RESULT_OK);
-                                        finish();
-                                    }
-                                });
-                            } catch (final HyphenateException e) {
-                                runOnUiThread(new Runnable() {
-                                    public void run() {
-                                        progressDialog.dismiss();
-                                        Toast.makeText(NewGroupActivity.this, st2 + e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
-                                    }
-                                });
-                            }
-
+                        if (publibCheckBox.isChecked()) {
+                            option.style = memberCheckbox.isChecked() ? EMGroupStyle.EMGroupStylePublicJoinNeedApproval : EMGroupStyle.EMGroupStylePublicOpenJoin;
+                        } else {
+                            option.style = memberCheckbox.isChecked() ? EMGroupStyle.EMGroupStylePrivateMemberCanInvite : EMGroupStyle.EMGroupStylePrivateOnlyOwnerInvite;
                         }
-                    }).start();
-                    break;
-                default:
-                    break;
-            }
+                        EMGroup emGroup = EMClient.getInstance().groupManager().createGroup(groupName, desc, members, reason, option);
+
+                        createAppGroup(emGroup);
+                    } catch (final HyphenateException e) {
+                        runOnUiThread(new Runnable() {
+                            public void run() {
+                                progressDialog.dismiss();
+                                Toast.makeText(NewGroupActivity.this, st2 + e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                            }
+                        });
+                    }
+
+                }
+            }).start();
+
 
         }
+    }
+
+    private void createAppGroup(EMGroup emGroup) {
+        if (emGroup != null) {
+            File file = null;
+            model.newGroup(this, emGroup.getGroupId(), emGroup.getGroupName(), emGroup.getDescription(), emGroup.getOwner(), emGroup.isPublic(), emGroup.isAllowInvites(), file, new OnCompleteListener<String>() {
+                @Override
+                public void onSuccess(String s) {
+                    boolean success = false;
+                    if (s != null) {
+                        Result result = ResultUtils.getResultFromJson(s, Group.class);
+                        if (result != null && result.isRetMsg()) {
+                            Group group = (Group) result.getRetData();
+                            if (group != null) {
+                                success = true;
+                            }
+                        }
+                    }
+                    createSuccess(success);
+                }
+
+                @Override
+                public void onError(String error) {
+                    createSuccess(false);
+                }
+            });
+        }
+    }
+
+    private void createSuccess(final boolean success) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                progressDialog.dismiss();
+                if (success) {
+                    setResult(RESULT_OK);
+                    finish();
+
+                } else {
+                    Toast.makeText(NewGroupActivity.this, "创建群组失败！", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     private void setPicToView(Intent picdata) {

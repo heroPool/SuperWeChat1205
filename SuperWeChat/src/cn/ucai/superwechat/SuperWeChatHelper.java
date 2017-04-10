@@ -1109,9 +1109,7 @@ public class SuperWeChatHelper {
             appcontactList = demoModel.getAppContactList();
         }
 
-        if (appcontactList != null) {
 
-        }
         // return a empty non-null object to avoid app crash
         if (appcontactList == null) {
             return new Hashtable<String, User>();
