@@ -3,19 +3,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#eee"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/height_top_bar"
         android:background="@color/top_bar_normal_bg"
-        android:gravity="center_vertical" >
+        android:gravity="center_vertical">
 
         <LinearLayout
             android:layout_width="45dp"
             android:layout_height="match_parent"
             android:background="@drawable/ease_common_tab_bg"
-            android:onClick="back" >
+            android:onClick="back">
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -71,68 +71,92 @@
         android:paddingLeft="5dp"
         android:paddingTop="5dp"
         android:textSize="18sp" />
-    
-    
-    <LinearLayout 
+
+    <RelativeLayout
+        android:id="@+id/group_avatar"
         android:layout_width="match_parent"
-       android:layout_height="39dp"
+        android:layout_height="50dp"
         android:layout_marginBottom="10dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:background="@drawable/em_button_normal_shape"
-        >
-        <TextView 
-            android:layout_marginLeft="5dp"
+        android:background="@drawable/em_button_normal_shape">
+
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="1"
+            android:text="请选择群头像"
+            android:textColor="#333"
+            android:textSize="18sp" />
+
+        <ImageView
+            android:id="@+id/image_groupavatar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/em_add_public_group" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="39dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/em_button_normal_shape">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="1"
             android:text="@string/Whether_the_public"
             android:textColor="#333"
-            android:layout_gravity="center_vertical"
-            android:textSize="18sp"
-            android:layout_weight="1"
-            />
-        
-        <CheckBox 
+            android:textSize="18sp" />
+
+        <CheckBox
             android:id="@+id/cb_public"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0"
             android:layout_gravity="center_vertical"
-            android:button="@drawable/em_checkbox_bg_selector"
-            />
-        
+            android:layout_weight="0"
+            android:button="@drawable/em_checkbox_bg_selector" />
+
     </LinearLayout>
-    
-    <LinearLayout 
+
+    <LinearLayout
         android:id="@+id/ll_open_invite"
         android:layout_width="match_parent"
-       android:layout_height="39dp"
+        android:layout_height="39dp"
         android:layout_marginBottom="10dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:background="@drawable/em_button_normal_shape"
-        >
-        <TextView 
+        android:background="@drawable/em_button_normal_shape">
+
+        <TextView
             android:id="@+id/second_desc"
-            android:layout_marginLeft="5dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="1"
             android:text="@string/Open_group_members_invited"
             android:textColor="#333"
-            android:layout_gravity="center_vertical"
-            android:textSize="18sp"
-            android:layout_weight="1"
-            />
-        
-        <CheckBox 
+            android:textSize="18sp" />
+
+        <CheckBox
             android:id="@+id/cb_member_inviter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0"
             android:layout_gravity="center_vertical"
-            android:button="@drawable/em_checkbox_bg_selector"
-            />
-        
+            android:layout_weight="0"
+            android:button="@drawable/em_checkbox_bg_selector" />
+
     </LinearLayout>
 
 </LinearLayout>

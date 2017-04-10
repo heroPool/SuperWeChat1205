@@ -262,6 +262,7 @@ public class UserProfileActivity extends BaseActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case REQUESTCODE_PICK:
                 if (data == null || data.getData() == null) {
@@ -277,7 +278,7 @@ public class UserProfileActivity extends BaseActivity {
             default:
                 break;
         }
-        super.onActivityResult(requestCode, resultCode, data);
+
     }
 
     public void startPhotoZoom(Uri uri) {

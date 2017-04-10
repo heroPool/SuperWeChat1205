@@ -88,6 +88,7 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragmentHe
     /**
      * if it is chatBot
      */
+
     private boolean isRobot;
 
     @Override

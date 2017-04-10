@@ -143,7 +143,6 @@ public class FriendsDetailsActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 finish();
-
             }
         });
     }
