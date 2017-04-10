@@ -142,6 +142,12 @@ public class FriendsDetailsActivity extends BaseActivity {
 
     private void showFriend(boolean isFriend) {
         Log.e(FriendsDetailsActivity.class.getSimpleName(), "isFriend+" + isFriend);
+        if (user.getMUserName().equals(EMClient.getInstance().getCurrentUser())) {
+            btnAddContact.setVisibility(View.GONE);
+            btnSendMsg.setVisibility(View.GONE);
+            btnSendVideo.setVisibility(View.GONE);
+            return;
+        }
         btnAddContact.setVisibility(isFriend ? View.GONE : View.VISIBLE);
         btnSendMsg.setVisibility(isFriend ? View.VISIBLE : View.GONE);
         btnSendVideo.setVisibility(isFriend ? View.VISIBLE : View.GONE);
