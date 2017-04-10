@@ -67,26 +67,33 @@ public class FriendsDetailsActivity extends BaseActivity {
         model = new UserRegisterModel();
         user = (User) getIntent().getSerializableExtra(I.User.TABLE_NAME);
         Log.e(FriendsDetailsActivity.class.getSimpleName(), user.toString());
-        if (user != null) {
-            showUserInfo();
-        } else {
+        if (user == null) {
             msg = (InviteMessage) getIntent().getSerializableExtra(I.User.NICK);
             if (msg != null) {
                 user = new User(msg.getFrom());
                 user.setMUserNick(msg.getNickname());
-                user.setMAvatarPath(msg.getAvatar());
-                showUserInfo();
-            } else {
-                finish();
-
+                user.setAvatar(msg.getAvatar());
             }
+        }
+        if (user == null) {
+            String username = getIntent().getStringExtra(I.User.USER_NAME);
+            if (username != null) {
+                user = new User(username);
+            }
+        }
+        if (user == null) {
+            finish();
+
+        } else {
+            showUserInfo();
+            syncUserInfo();
         }
     }
 
     private void showUserInfo() {
         isFriend = SuperWeChatHelper.getInstance().getAppContactList().containsKey(user.getMUserName());
         Log.e(FriendsDetailsActivity.class.getSimpleName(), "isFriend+" + isFriend);
-        if (isFriend) {
+        if (isFriend && user.getMUserNick() != null) {
             SuperWeChatHelper.getInstance().saveAppContact(user);
         }
         textFriendsdetaiUsername.setText(user.getMUserName());
@@ -94,7 +101,7 @@ public class FriendsDetailsActivity extends BaseActivity {
         EaseUserUtils.setAppUserAvatar(FriendsDetailsActivity.this, user.getMUserName(), imageFriendsdetailsAvatar);
 //        EaseUserUtils.setAppUserNick(user.getMUserName(), textFriendsdetailsNick);
         showFriend(isFriend);
-        syncUserInfo();//从服务器异步加载用户的最新信息,填充到好友列表或者新的朋友列表
+//        syncUserInfo();//从服务器异步加载用户的最新信息,填充到好友列表或者新的朋友列表
     }
 
     private void syncUserInfo() {
@@ -118,6 +125,9 @@ public class FriendsDetailsActivity extends BaseActivity {
                                         //update user
                                         SuperWeChatHelper.getInstance().saveAppContact(u);
                                     }
+                                    user = u;
+                                    showUserInfo();
+
                                 }
                             }
                         }
@@ -172,6 +182,7 @@ public class FriendsDetailsActivity extends BaseActivity {
                 break;
         }
     }
+
     protected void startVideoCall() {
         if (!EMClient.getInstance().isConnected())
             Toast.makeText(this, R.string.not_connect_to_server, Toast.LENGTH_SHORT).show();

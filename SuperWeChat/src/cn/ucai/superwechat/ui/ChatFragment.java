@@ -44,6 +44,7 @@ import java.util.List;
 import java.util.Map;
 
 import cn.ucai.superwechat.Constant;
+import cn.ucai.superwechat.I;
 import cn.ucai.superwechat.R;
 import cn.ucai.superwechat.SuperWeChatHelper;
 import cn.ucai.superwechat.domain.EmojiconExampleGroupData;
@@ -277,7 +278,7 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragmentHe
     public void onAvatarClick(String username) {
         //handling when user click avatar
         Intent intent = new Intent(getActivity(), UserProfileActivity.class);
-        intent.putExtra("username", username);
+        intent.putExtra(I.User.USER_NAME, username);
         startActivity(intent);
     }
 

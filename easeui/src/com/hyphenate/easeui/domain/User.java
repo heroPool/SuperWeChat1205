@@ -17,8 +17,13 @@ public class User implements Serializable {
         return initialLetter;
     }
 
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
     /**
      * initial letter for nickname
+
      */
     protected String initialLetter;
 
