@@ -227,13 +227,15 @@ public class EaseConversationAdapter extends ArrayAdapter<EMConversation> {
                 results.values = copyConversationList;
                 results.count = copyConversationList.size();
             } else {
-                String prefixString = prefix.toString();
+                String prefixString = prefix.toString().toLowerCase();
+
                 final int count = mOriginalValues.size();
                 final ArrayList<EMConversation> newValues = new ArrayList<EMConversation>();
 
                 for (int i = 0; i < count; i++) {
                     final EMConversation value = mOriginalValues.get(i);
                     String username = value.conversationId().toLowerCase();
+                    String nickname = "";
 
                     EMGroup group = EMClient.getInstance().groupManager().getGroup(username);
                     if(group != null){
@@ -241,18 +243,20 @@ public class EaseConversationAdapter extends ArrayAdapter<EMConversation> {
                     }else{
                         User user = EaseUserUtils.getAppUserInfo(username);
                         // TODO: not support Nick anymore
-//                        if(user != null && user.getNick() != null)
-//                            username = user.getNick();
+                        if(user != null && user.getMUserNick() != null)
+                            nickname = user.getMUserNick().toLowerCase();
+
                     }
 
                     // First match against the whole ,non-splitted value
-                    if (username.contains(prefixString)) {
-                        newValues.add(value);
-                    } else{
-                          final String[] words = username.split(" ");
-                            final int wordCount = words.length;
+                    if (username.contains(prefixString) || nickname.contains(prefixString)) {
 
-                            // Start at index 0, in case valueText starts with space(s)
+                        newValues.add(value);
+                    } else {
+                        final String[] words = username.split(" ");
+                        final int wordCount = words.length;
+
+                        // Start at index 0, in case valueText starts with space(s)
                         for (String word : words) {
                             if (word.startsWith(prefixString)) {
                                 newValues.add(value);
