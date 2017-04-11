@@ -54,7 +54,7 @@ import cn.ucai.superwechat.R;
 import cn.ucai.superwechat.SuperWeChatHelper;
 import cn.ucai.superwechat.db.GroupModel;
 import cn.ucai.superwechat.db.IGroupModel;
-import cn.ucai.superwechat.domain.Group;
+import com.hyphenate.easeui.domain.Group;
 import cn.ucai.superwechat.net.OnCompleteListener;
 import cn.ucai.superwechat.utils.L;
 import cn.ucai.superwechat.utils.Result;

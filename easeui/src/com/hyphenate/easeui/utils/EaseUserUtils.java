@@ -119,4 +119,19 @@ public class EaseUserUtils {
         }
     }
 
+    public static void setGroupAvatar(Context context, String avatar, ImageView viewById) {
+        if (avatar != null) {
+            try {
+                int avatarResId = Integer.parseInt(avatar);
+                Glide.with(context).load(avatarResId).into(viewById);
+            } catch (Exception e) {
+
+                Glide.with(context).load(avatar).diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .placeholder(R.drawable.ease_default_image).into(viewById);
+            }
+        } else {
+            Glide.with(context).load(R.drawable.ease_default_image).into(viewById);
+
+        }
+    }
 }
