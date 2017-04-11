@@ -124,6 +124,9 @@ public class FriendsDetailsActivity extends BaseActivity {
                                     } else if (isFriend) {
                                         //update user
                                         SuperWeChatHelper.getInstance().saveAppContact(u);
+                                        if (u.getMUserName().equals(EMClient.getInstance().getCurrentUser())) {
+                                            SuperWeChatHelper.getInstance().getUserProfileManager().updateCurrentAppUserInfo(u);
+                                        }
                                     }
                                     user = u;
                                     showUserInfo();

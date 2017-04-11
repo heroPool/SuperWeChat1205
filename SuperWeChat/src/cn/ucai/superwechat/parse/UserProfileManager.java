@@ -215,11 +215,11 @@ public class UserProfileManager {
                         User user = (User) resultFromJson.getRetData();
                         Log.i("UserProfileManager", user.toString());
                         if (user != null) {
-                            currentAppUser = user;
+                            updateCurrentAppUserInfo(user);
                         }
-                        setCurrentAppUserNick(user.getMUserNick());
-                        setCurrentAppUserAvatar(user.getAvatar());
-                        SuperWeChatHelper.getInstance().saveAppContact(user);
+//                        setCurrentAppUserNick(user.getMUserNick());
+//                        setCurrentAppUserAvatar(user.getAvatar());
+//                        SuperWeChatHelper.getInstance().saveAppContact(user);
                     }
                 }
             }
@@ -229,6 +229,13 @@ public class UserProfileManager {
 
             }
         });
+    }
+
+    public void updateCurrentAppUserInfo(User user) {
+        currentAppUser = user;
+        setCurrentAppUserNick(user.getMUserNick());
+        setCurrentAppUserAvatar(user.getAvatar());
+        SuperWeChatHelper.getInstance().saveAppContact(user);
     }
 
     public void asyncGetCurrentUserInfo() {
