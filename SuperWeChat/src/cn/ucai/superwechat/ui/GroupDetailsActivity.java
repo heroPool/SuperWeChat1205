@@ -38,7 +38,6 @@ import com.hyphenate.chat.EMConversation.EMConversationType;
 import com.hyphenate.chat.EMCursorResult;
 import com.hyphenate.chat.EMGroup;
 import com.hyphenate.chat.EMPushConfigs;
-import cn.ucai.superwechat.R;
 import com.hyphenate.easeui.ui.EaseGroupListener;
 import com.hyphenate.easeui.utils.EaseUserUtils;
 import com.hyphenate.easeui.widget.EaseAlertDialog;
@@ -51,6 +50,8 @@ import com.hyphenate.util.EMLog;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import cn.ucai.superwechat.R;
 
 public class GroupDetailsActivity extends BaseActivity implements OnClickListener {
 	private static final String TAG = "GroupDetailsActivity";
@@ -823,8 +824,8 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 			final String username = getItem(position);
 			convertView.setVisibility(View.VISIBLE);
 			button.setVisibility(View.VISIBLE);
-			EaseUserUtils.setUserNick(username, holder.textView);
-			EaseUserUtils.setUserAvatar(getContext(), username, holder.imageView);
+			EaseUserUtils.setAppUserNick(username, holder.textView);
+			EaseUserUtils.setAppUserAvatar(getContext(), username, holder.imageView);
 
 			LinearLayout id_background = (LinearLayout) convertView.findViewById(R.id.l_bg_id);
 			id_background.setBackgroundColor(convertView.getResources().getColor(
@@ -922,8 +923,8 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 			} else {
 				// members
 				final String username = getItem(position);
-				EaseUserUtils.setUserNick(username, holder.textView);
-				EaseUserUtils.setUserAvatar(getContext(), username, holder.imageView);
+				EaseUserUtils.setAppUserNick(username, holder.textView);
+				EaseUserUtils.setAppUserAvatar(getContext(), username, holder.imageView);
 
 				LinearLayout id_background = (LinearLayout) convertView.findViewById(R.id.l_bg_id);
 				if (isInMuteList(username)) {
