@@ -26,10 +26,12 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.hyphenate.chat.EMClient;
+import com.hyphenate.easeui.domain.Group;
 import com.hyphenate.easeui.utils.EaseUserUtils;
 
 import java.util.List;
@@ -40,8 +42,6 @@ import cn.ucai.superwechat.db.InviteMessgeDao;
 import cn.ucai.superwechat.domain.InviteMessage;
 import cn.ucai.superwechat.domain.InviteMessage.InviteMesageStatus;
 import cn.ucai.superwechat.ui.FriendsDetailsActivity;
-
-import static android.R.attr.start;
 
 public class NewFriendsMsgAdapter extends ArrayAdapter<InviteMessage> {
 
@@ -68,7 +68,7 @@ public class NewFriendsMsgAdapter extends ArrayAdapter<InviteMessage> {
             holder.status = (Button) convertView.findViewById(R.id.user_state);
             holder.groupContainer = (LinearLayout) convertView.findViewById(R.id.ll_group);
             holder.groupname = (TextView) convertView.findViewById(R.id.tv_groupName);
-            holder.layoutInvite = (LinearLayout) convertView.findViewById(R.id.layout_invite);
+            holder.layoutInvite = (RelativeLayout) convertView.findViewById(R.id.layout_invite);
 
             // holder.time = (TextView) convertView.findViewById(R.id.time);
             convertView.setTag(holder);
@@ -97,9 +97,13 @@ public class NewFriendsMsgAdapter extends ArrayAdapter<InviteMessage> {
 
             if (msg.getGroupId() != null) { // show group name
                 holder.groupContainer.setVisibility(View.VISIBLE);
-                holder.groupname.setText(msg.getGroupName());
+                holder.groupname.setText(msg.getGroupId());
+                holder.name.setText(msg.getGroupName());
+                EaseUserUtils.setGroupAvatar(context, Group.getAvatar(msg.getGroupId()), holder.avator);
             } else {
                 holder.groupContainer.setVisibility(View.GONE);
+                EaseUserUtils.setAvatar(context, msg.getAvatar(), holder.avator);
+                holder.name.setText(msg.getNickname());
             }
 
             holder.reason.setText(msg.getReason());
@@ -303,7 +307,7 @@ public class NewFriendsMsgAdapter extends ArrayAdapter<InviteMessage> {
         Button status;
         LinearLayout groupContainer;
         TextView groupname;
-        LinearLayout layoutInvite;
+        RelativeLayout layoutInvite;
         // TextView time;
     }
 
