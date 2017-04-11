@@ -151,6 +151,7 @@ public class FriendsDetailsActivity extends BaseActivity {
         btnAddContact.setVisibility(isFriend ? View.GONE : View.VISIBLE);
         btnSendMsg.setVisibility(isFriend ? View.VISIBLE : View.GONE);
         btnSendVideo.setVisibility(isFriend ? View.VISIBLE : View.GONE);
+        return;
     }
 
     private void initView() {

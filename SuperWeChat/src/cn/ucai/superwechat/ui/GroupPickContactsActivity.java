@@ -32,6 +32,7 @@ import com.hyphenate.chat.EMGroup;
 import com.hyphenate.easeui.adapter.EaseContactAdapter;
 import com.hyphenate.easeui.domain.User;
 import com.hyphenate.easeui.widget.EaseSidebar;
+import com.hyphenate.easeui.widget.EaseTitleBar;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -52,12 +53,19 @@ public class GroupPickContactsActivity extends BaseActivity {
      * members already in the group
      */
     private List<String> existMembers;
+    EaseTitleBar titleBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.em_activity_group_pick_contacts);
-
+        titleBar = (EaseTitleBar) findViewById(R.id.title_bar);
+        titleBar.setLeftLayoutClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         String groupId = getIntent().getStringExtra("groupId");
         if (groupId == null) {// create new group
             isCreatingNewGroup = true;

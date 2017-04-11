@@ -15,7 +15,7 @@ import cn.ucai.superwechat.utils.OkHttpUtils;
 
 public class GroupModel implements IGroupModel {
     @Override
-    public void newGroup(Context context, String hxid,String groupName, String des, String owner, boolean ispublic, boolean isInvites, File file, OnCompleteListener<String> listener) {
+    public void newGroup(Context context, String hxid, String groupName, String des, String owner, boolean ispublic, boolean isInvites, File file, OnCompleteListener<String> listener) {
         OkHttpUtils<String> okhttps = new OkHttpUtils<>(context);
         okhttps.setRequestUrl(I.REQUEST_CREATE_GROUP)
                 .addParam(I.Group.NAME, groupName)
@@ -29,5 +29,15 @@ public class GroupModel implements IGroupModel {
                 .post()
                 .execute(listener);
 
+    }
+
+    @Override
+    public void addMembers(Context context, String members, String grouphxid, OnCompleteListener<String> listener) {
+        OkHttpUtils<String> okhttps = new OkHttpUtils<>(context);
+        okhttps.setRequestUrl(I.REQUEST_ADD_GROUP_MEMBERS)
+                .addParam(I.Member.USER_NAME, members)
+                .addParam(I.Member.GROUP_HX_ID, grouphxid)
+                .targetClass(String.class)
+                .execute(listener);
     }
 }

@@ -29,7 +29,6 @@ import com.hyphenate.easeui.domain.User;
 import com.hyphenate.easeui.utils.EaseUserUtils;
 
 import java.io.BufferedOutputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -343,17 +342,9 @@ public class UserProfileActivity extends BaseActivity {
     }
 
     private void uploadUserAvatar(File file) {
-
         dialog = ProgressDialog.show(this, getString(R.string.dl_update_photo), getString(R.string.dl_waiting));
         SuperWeChatHelper.getInstance().getUserProfileManager().uploadUserAvatar(file);
         dialog.show();
-    }
-
-
-    public byte[] Bitmap2Bytes(Bitmap bm) {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bm.compress(Bitmap.CompressFormat.PNG, 100, baos);
-        return baos.toByteArray();
     }
 
     class UpdateNickReceiver extends BroadcastReceiver {

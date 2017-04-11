@@ -12,4 +12,7 @@ import cn.ucai.superwechat.net.OnCompleteListener;
 
 public interface IGroupModel {
     void newGroup(Context context, String hxid,String groupName, String des, String owner, boolean ispublic, boolean isInvites, File file, OnCompleteListener<String> listener);
+
+    void addMembers(Context context, String members, String grouphxid, OnCompleteListener<String> listener);
+
 }

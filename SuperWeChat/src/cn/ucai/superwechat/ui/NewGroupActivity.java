@@ -44,6 +44,7 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Arrays;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -154,7 +155,7 @@ public class NewGroupActivity extends BaseActivity {
                         }
                         EMGroup emGroup = EMClient.getInstance().groupManager().createGroup(groupName, desc, members, reason, option);
 
-                        createAppGroup(emGroup);
+                        createAppGroup(emGroup, members);
                     } catch (final HyphenateException e) {
                         runOnUiThread(new Runnable() {
                             public void run() {
@@ -171,7 +172,7 @@ public class NewGroupActivity extends BaseActivity {
         }
     }
 
-    private void createAppGroup(EMGroup emGroup) {
+    private void createAppGroup(EMGroup emGroup, final String[] members) {
         if (emGroup != null) {
             File file = null;
             model.newGroup(this, emGroup.getGroupId(), emGroup.getGroupName(), emGroup.getDescription(), emGroup.getOwner(), emGroup.isPublic(), emGroup.isAllowInvites(), avatarFile, new OnCompleteListener<String>() {
@@ -182,12 +183,20 @@ public class NewGroupActivity extends BaseActivity {
                         Result result = ResultUtils.getResultFromJson(s, Group.class);
                         if (result != null && result.isRetMsg()) {
                             Group group = (Group) result.getRetData();
+
                             if (group != null) {
-                                success = true;
+                                if (members.length > 0) {
+                                    addMembers(group.getMGroupHxid(), getMembers(members));
+
+                                } else {
+                                    success = true;
+                                }
                             }
                         }
                     }
-                    createSuccess(success);
+                    if (members.length <= 0) {
+                        createSuccess(success);
+                    }
                 }
 
                 @Override
@@ -196,6 +205,38 @@ public class NewGroupActivity extends BaseActivity {
                 }
             });
         }
+    }
+
+    private void addMembers(String hxid, String members) {
+        model.addMembers(this, members, hxid, new OnCompleteListener<String>() {
+            @Override
+            public void onSuccess(String result) {
+                boolean success = false;
+                if (result != null) {
+                    Result resultFromJson = ResultUtils.getResultFromJson(result, Group.class);
+                    if (resultFromJson != null && resultFromJson.isRetMsg()) {
+                        success = true;
+                    }
+                }
+                createSuccess(success);
+
+            }
+
+            @Override
+            public void onError(String error) {
+                createSuccess(false);
+            }
+        });
+    }
+
+    private String getMembers(String[] members) {
+
+        String s = Arrays.toString(members).toString();
+        StringBuffer str = new StringBuffer();
+        for (String member : members) {
+            str.append(member).append(",");
+        }
+        return str.toString();
     }
 
     private void createSuccess(final boolean success) {

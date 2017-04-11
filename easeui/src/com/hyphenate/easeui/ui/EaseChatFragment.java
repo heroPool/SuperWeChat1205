@@ -259,7 +259,6 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
         }
     }
 
-
     protected void onConversationInit() {
         conversation = EMClient.getInstance().chatManager().getConversation(toChatUsername, EaseCommonUtils.getConversationType(chatType), true);
         conversation.markAllMessagesAsRead();
